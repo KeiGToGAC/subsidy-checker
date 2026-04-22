@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中小企業成長加速化補助金 適用診断</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0b1f4a;
+    --navy-light: #1a3270;
+    --orange: #e85c1a;
+    --orange-light: #f47c3c;
+    --orange-pale: #fff3ec;
+    --gray-bg: #f5f6f8;
+    --gray-border: #dde2ea;
+    --text: #1a2540;
+    --text-muted: #6b778c;
+    --white: #ffffff;
+    --success: #1a8c5a;
+    --success-bg: #edfaf4;
+    --warning: #c47a00;
+    --warning-bg: #fff9ec;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--gray-bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 32px 16px 60px;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 60%, #1e4080 100%);
+    border-radius: 16px;
+    padding: 40px 28px 36px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 360px; height: 360px;
+    background: radial-gradient(circle, rgba(232,92,26,.2) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--orange);
+    color: var(--white);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    padding: 4px 14px;
+    border-radius: 2px;
+    margin-bottom: 14px;
+    font-family: 'Montserrat', sans-serif;
+    position: relative;
+  }
+  .hero h1 {
+    font-size: clamp(20px, 4vw, 30px);
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.4;
+    letter-spacing: -.01em;
+    margin-bottom: 10px;
+    position: relative;
+  }
+  .hero h1 em { color: var(--orange-light); font-style: normal; }
+  .hero p {
+    font-size: 13px;
+    color: rgba(255,255,255,.65);
+    line-height: 1.8;
+    position: relative;
+  }
+
+  /* CONTAINER */
+  .container { max-width: 680px; margin: 0 auto; }
+
+  /* PROGRESS */
+  .progress-wrap {
+    background: var(--white);
+    border-radius: 10px;
+    padding: 16px 22px;
+    margin-bottom: 20px;
+    border: 1px solid var(--gray-border);
+    box-shadow: 0 2px 8px rgba(11,31,74,.04);
+  }
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .progress-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 500;
+    letter-spacing: .08em;
+    font-family: 'Montserrat', sans-serif;
+  }
+  .progress-count {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .progress-count span { color: var(--orange); }
+  .progress-track {
+    height: 5px;
+    background: var(--gray-border);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--orange), var(--orange-light));
+    border-radius: 99px;
+    transition: width .5s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* CARD */
+  .card {
+    background: var(--white);
+    border-radius: 14px;
+    border: 1px solid var(--gray-border);
+    box-shadow: 0 4px 20px rgba(11,31,74,.06);
+    overflow: hidden;
+    animation: fadeUp .35s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .card-header {
+    background: linear-gradient(90deg, var(--navy) 0%, var(--navy-light) 100%);
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .q-num {
+    background: var(--orange);
+    color: var(--white);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 3px;
+    letter-spacing: .06em;
+    white-space: nowrap;
+  }
+  .q-text {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.5;
+  }
+  .card-body { padding: 24px; }
+
+  /* OPTIONS */
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option {
+    border: 2px solid var(--gray-border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    cursor: pointer;
+    transition: all .2s ease;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: var(--white);
+    text-align: left;
+    width: 100%;
+    font-family: 'Noto Sans JP', sans-serif;
+  }
+  .option:hover { border-color: var(--orange-light); background: var(--orange-pale); transform: translateX(3px); }
+  .option.selected { border-color: var(--orange); background: var(--orange-pale); }
+  .option-icon {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--gray-border);
+    flex-shrink: 0;
+    margin-top: 2px;
+    transition: all .2s;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--white);
+  }
+  .option.selected .option-icon { background: var(--orange); border-color: var(--orange); }
+  .option.selected .option-icon::after {
+    content: ''; width: 7px; height: 7px;
+    background: var(--white); border-radius: 50%;
+  }
+  .option-label { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.4; }
+  .option-sub { font-size: 11px; color: var(--text-muted); margin-top: 3px; line-height: 1.5; font-weight: 400; }
+
+  /* BUTTONS */
+  .btn-row {
+    display: flex; gap: 10px;
+    margin-top: 24px; justify-content: flex-end;
+  }
+  .btn {
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    font-family: 'Noto Sans JP', sans-serif;
+    transition: all .2s;
+    letter-spacing: .04em;
+  }
+  .btn-primary { background: var(--orange); color: var(--white); box-shadow: 0 4px 14px rgba(232,92,26,.3); }
+  .btn-primary:hover { background: var(--orange-light); transform: translateY(-1px); }
+  .btn-primary:disabled { background: var(--gray-border); box-shadow: none; cursor: not-allowed; transform: none; color: var(--text-muted); }
+  .btn-secondary { background: var(--white); color: var(--navy); border: 2px solid var(--gray-border); }
+  .btn-secondary:hover { border-color: var(--navy); }
+
+  /* RESULT */
+  #result { display: none; }
+  .result-top {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    padding: 32px 28px;
+    border-radius: 14px 14px 0 0;
+    text-align: center;
+  }
+  .result-icon { font-size: 44px; margin-bottom: 10px; }
+  .result-label { font-size: 11px; color: rgba(255,255,255,.55); font-family: 'Montserrat', sans-serif; letter-spacing: .1em; margin-bottom: 8px; }
+  .result-main { font-size: clamp(16px, 2.5vw, 22px); font-weight: 900; color: var(--white); line-height: 1.4; }
+  .result-main em { color: var(--orange-light); font-style: normal; }
+  .result-body { padding: 28px; display: flex; flex-direction: column; gap: 20px; }
+
+  .eligibility-bar {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 16px 18px; border-radius: 10px; border: 2px solid transparent;
+  }
+  .eligibility-bar.high { background: var(--success-bg); border-color: var(--success); }
+  .eligibility-bar.mid  { background: var(--warning-bg); border-color: #e6a500; }
+  .eligibility-bar.low  { background: #fef2f2; border-color: #e05c5c; }
+  .eligibility-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+  .high .eligibility-dot { background: var(--success); }
+  .mid  .eligibility-dot { background: #e6a500; }
+  .low  .eligibility-dot { background: #e05c5c; }
+  .eligibility-text strong { font-size: 14px; font-weight: 700; }
+  .high .eligibility-text strong { color: var(--success); }
+  .mid  .eligibility-text strong { color: var(--warning); }
+  .low  .eligibility-text strong { color: #c0392b; }
+  .eligibility-text p { font-size: 12px; color: var(--text-muted); margin-top: 4px; line-height: 1.7; }
+
+  .section-label {
+    font-size: 10px; font-weight: 700; letter-spacing: .1em;
+    color: var(--text-muted); font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase; padding-bottom: 10px;
+    border-bottom: 1px solid var(--gray-border); margin-bottom: 12px;
+  }
+  .subsidy-list { display: flex; flex-direction: column; gap: 9px; }
+  .subsidy-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px 14px; border-radius: 8px;
+    background: var(--gray-bg); border: 1px solid var(--gray-border);
+  }
+  .subsidy-item.primary { background: var(--orange-pale); border-color: var(--orange-light); }
+  .subsidy-badge {
+    font-size: 9px; font-weight: 700; padding: 3px 8px;
+    border-radius: 2px; white-space: nowrap;
+    font-family: 'Montserrat', sans-serif; flex-shrink: 0; margin-top: 2px;
+  }
+  .primary .subsidy-badge { background: var(--orange); color: var(--white); }
+  .secondary .subsidy-badge { background: var(--navy); color: var(--white); }
+  .subsidy-name { font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.4; }
+  .subsidy-detail { font-size: 11px; color: var(--text-muted); margin-top: 2px; line-height: 1.6; }
+
+  .summary-box {
+    font-size: 12px; line-height: 1.9; color: var(--text-muted);
+    background: var(--gray-bg); padding: 16px 18px;
+    border-radius: 8px; border: 1px solid var(--gray-border);
+  }
+
+  /* CTA */
+  .cta-block {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    border-radius: 12px; padding: 26px 24px; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .cta-block::before {
+    content: ''; position: absolute; right: -40px; top: -40px;
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, rgba(232,92,26,.22) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .cta-block h3 { font-size: 17px; font-weight: 900; color: var(--white); margin-bottom: 8px; position: relative; }
+  .cta-block p { font-size: 12px; color: rgba(255,255,255,.65); margin-bottom: 18px; line-height: 1.8; position: relative; }
+  .cta-btn {
+    display: inline-block;
+    background: var(--orange); color: var(--white);
+    text-decoration: none; padding: 13px 32px;
+    border-radius: 6px; font-size: 14px; font-weight: 700;
+    letter-spacing: .04em;
+    box-shadow: 0 6px 20px rgba(232,92,26,.4);
+    transition: all .2s; position: relative;
+    cursor: pointer; border: none;
+    font-family: 'Noto Sans JP', sans-serif;
+  }
+  .cta-btn:hover { background: var(--orange-light); transform: translateY(-2px); }
+  .retry-btn {
+    display: block; margin: 14px auto 0;
+    background: none; border: 2px solid rgba(255,255,255,.3);
+    color: rgba(255,255,255,.65); border-radius: 6px;
+    padding: 9px 22px; font-size: 12px; font-weight: 600;
+    cursor: pointer; font-family: 'Noto Sans JP', sans-serif;
+    transition: all .2s;
+  }
+  .retry-btn:hover { border-color: rgba(255,255,255,.7); color: var(--white); }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">SUBSIDY DIAGNOSIS</div>
+    <h1>中小企業成長加速化補助金<br><em>適用診断ツール</em></h1>
+    <p>8つの質問に答えるだけで、貴社に最適な<br>補助金・支援制度をご案内します。</p>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-meta">
+      <span class="progress-label">PROGRESS</span>
+      <span class="progress-count"><span id="currentQ">1</span> / <span id="totalQ">8</span></span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width:12.5%"></div>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="quiz">
+    <div class="card" id="questionCard">
+      <div class="card-header">
+        <div class="q-num" id="qNum">Q 01</div>
+        <div class="q-text" id="qText"></div>
+      </div>
+      <div class="card-body">
+        <div class="options" id="optionsContainer"></div>
+        <div class="btn-row">
+          <button class="btn btn-secondary" id="prevBtn" onclick="prevQ()" style="display:none">← 戻る</button>
+          <button class="btn btn-primary" id="nextBtn" onclick="nextQ()" disabled>次へ →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="result">
+    <div class="card">
+      <div class="result-top">
+        <div class="result-icon" id="resultIcon">📊</div>
+        <div class="result-label">DIAGNOSIS RESULT</div>
+        <div class="result-main" id="resultMain"></div>
+      </div>
+      <div class="result-body">
+        <div id="eligibilityBlock"></div>
+        <div>
+          <div class="section-label">おすすめ補助金・支援制度</div>
+          <div class="subsidy-list" id="subsidyList"></div>
+        </div>
+        <div>
+          <div class="section-label">診断サマリー</div>
+          <div class="summary-box" id="summaryText"></div>
+        </div>
+        <div class="cta-block">
+          <h3>補助金申請は加賀ソルネットにご相談ください</h3>
+          <p>申請書類の作成から採択後のフォローまで<br>トータルでサポートいたします。</p>
+          <a class="cta-btn" href="https://www.solnet.ne.jp/contact/" target="_blank">無料相談・お問い合わせ</a>
+          <button class="retry-btn" onclick="resetQuiz()">🔄 もう一度診断する</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const questions = [
+  {
+    text: "現在の売上高はどのくらいですか？",
+    options: [
+      { label: "10億円未満", sub: "売上規模が小さい段階です", score: 0 },
+      { label: "10億円以上〜50億円未満", sub: "成長フェーズの企業に多い規模", score: 2 },
+      { label: "50億円以上〜100億円未満", sub: "100億円超を狙える射程範囲", score: 4 },
+      { label: "100億円以上", sub: "既に目標達成・更なる拡大を目指している", score: 1 }
+    ]
+  },
+  {
+    text: "「100億宣言」（売上高100億円を目指すと宣言）を行っていますか？",
+    options: [
+      { label: "既に宣言済み", sub: "申請手続きが完了している", score: 4 },
+      { label: "申請中・検討している", sub: "近日中に宣言する予定", score: 3 },
+      { label: "知らなかった・これから調べる", sub: "まず概要を確認したい", score: 1 },
+      { label: "宣言するつもりはない", sub: "他の補助金を探している", score: 0 }
+    ]
+  },
+  {
+    text: "今後取り組みたい投資の内容を教えてください（最もあてはまるもの）",
+    options: [
+      { label: "生産設備・工場の拡張・増強", sub: "製造能力の抜本的な強化", score: 3 },
+      { label: "デジタル化・DX推進（システム導入等）", sub: "ITインフラやソフトウェア整備", score: 3 },
+      { label: "海外展開・輸出拡大", sub: "新興国や欧米市場への進出", score: 4 },
+      { label: "M&A・事業承継・業態転換", sub: "成長のための戦略的再編", score: 3 }
+    ]
+  },
+  {
+    text: "賃上げへの取り組み予定はありますか？",
+    options: [
+      { label: "積極的に賃上げを計画している", sub: "給与水準の引き上げを明確に予定", score: 4 },
+      { label: "業績次第で検討したい", sub: "状況に応じて対応する", score: 2 },
+      { label: "当面は難しい", sub: "財務的に余裕が少ない状況", score: 0 },
+      { label: "既に業界水準以上を支給している", sub: "賃上げは既に実施済み", score: 3 }
+    ]
+  },
+  {
+    text: "投資規模（補助金申請額）のイメージを教えてください",
+    options: [
+      { label: "3,000万円未満", sub: "比較的小規模な投資", score: 1 },
+      { label: "3,000万円以上〜1億円未満", sub: "中規模の投資計画", score: 3 },
+      { label: "1億円以上〜5億円未満", sub: "大きな投資を予定", score: 4 },
+      { label: "5億円以上", sub: "大規模投資・大型補助金を検討", score: 4 }
+    ]
+  },
+  {
+    text: "地域経済（地域内仕入・雇用創出）への貢献についての考えは？",
+    options: [
+      { label: "地域内の仕入れ比率が高い・高める予定", sub: "地域サプライチェーンへの貢献を重視", score: 4 },
+      { label: "雇用を増やす予定がある", sub: "新規採用・人員拡大を計画", score: 3 },
+      { label: "どちらも特に計画はない", sub: "現状維持の方針", score: 0 },
+      { label: "わからない・これから検討", sub: "要件を確認しながら判断したい", score: 1 }
+    ]
+  },
+  {
+    text: "補助金申請の経験はありますか？",
+    options: [
+      { label: "複数回申請し、採択実績がある", sub: "申請ノウハウが社内にある", score: 3 },
+      { label: "申請したことがある（不採択も含む）", sub: "ある程度の知識はある", score: 2 },
+      { label: "今回が初めて", sub: "申請手続きに不安がある", score: 1 },
+      { label: "外部に委託したい", sub: "専門家のサポートを希望", score: 2 }
+    ]
+  },
+  {
+    text: "補助金活用にあたって最も重視することは？",
+    options: [
+      { label: "採択確率を上げたい", sub: "確実に採択されることを優先", score: 3 },
+      { label: "補助額を最大化したい", sub: "できる限り多くの補助を受けたい", score: 4 },
+      { label: "申請手続きの負担を減らしたい", sub: "効率的に進めたい", score: 2 },
+      { label: "補助金の種類・選択肢を把握したい", sub: "まず選択肢を整理したい", score: 1 }
+    ]
+  }
+];
+
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+
+function renderQ() {
+  const q = questions[current];
+  document.getElementById('qNum').textContent = 'Q ' + String(current + 1).padStart(2, '0');
+  document.getElementById('qText').textContent = q.text;
+  document.getElementById('currentQ').textContent = current + 1;
+  document.getElementById('progressFill').style.width = ((current + 1) / questions.length * 100) + '%';
+
+  const container = document.getElementById('optionsContainer');
+  container.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option' + (answers[current] === i ? ' selected' : '');
+    btn.innerHTML = `<div class="option-icon"></div><div class="option-content"><div class="option-label">${opt.label}</div>${opt.sub ? `<div class="option-sub">${opt.sub}</div>` : ''}</div>`;
+    btn.onclick = () => selectOption(i);
+    container.appendChild(btn);
+  });
+
+  document.getElementById('prevBtn').style.display = current > 0 ? 'inline-block' : 'none';
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.disabled = answers[current] === null;
+  nextBtn.textContent = current === questions.length - 1 ? '診断結果を見る ✓' : '次へ →';
+
+  const card = document.getElementById('questionCard');
+  card.style.animation = 'none';
+  card.offsetHeight;
+  card.style.animation = 'fadeUp .35s ease both';
+}
+
+function selectOption(idx) {
+  answers[current] = idx;
+  document.querySelectorAll('.option').forEach((el, i) => el.classList.toggle('selected', i === idx));
+  document.getElementById('nextBtn').disabled = false;
+}
+
+function nextQ() {
+  if (answers[current] === null) return;
+  if (current < questions.length - 1) { current++; renderQ(); }
+  else showResult();
+}
+
+function prevQ() {
+  if (current > 0) { current--; renderQ(); }
+}
+
+function showResult() {
+  const totalScore = answers.reduce((sum, ans, qi) => sum + (ans !== null ? questions[qi].options[ans].score : 0), 0);
+  const maxScore = questions.reduce((sum, q) => sum + Math.max(...q.options.map(o => o.score)), 0);
+  const ratio = totalScore / maxScore;
+
+  document.getElementById('quiz').style.display = 'none';
+  document.getElementById('progressWrap').style.display = 'none';
+  document.getElementById('result').style.display = 'block';
+
+  let icon, mainText, eligClass, eligStrong, eligDesc, subsidies, summary;
+
+  if (ratio >= 0.75) {
+    icon = '🏆';
+    mainText = '成長加速化補助金の<em>適用可能性が高い</em>と判断されます';
+    eligClass = 'high';
+    eligStrong = '適用可能性：高（スコア ' + totalScore + '/' + maxScore + '）';
+    eligDesc = '100億宣言・賃上げ・投資規模・地域貢献など主要要件を複数満たしています。申請に向けた具体的なアクションをおすすめします。';
+    subsidies = [
+      { primary: true,  name: '中小企業成長加速化補助金', detail: '補助率：1/2、補助上限：10億円／件（設備投資・IT化等）' },
+      { primary: true,  name: '中堅・中小・スタートアップ企業大規模成長投資補助金', detail: '補助率：1/3、補助上限：最大50億円（大規模投資向け）' },
+      { primary: false, name: 'ものづくり補助金（グローバル展開型）', detail: '海外展開・輸出強化に積極的な企業向け' },
+      { primary: false, name: '事業再構築補助金', detail: '業態転換・新市場参入などの抜本的事業再編向け' }
+    ];
+    summary = `貴社のスコアは${totalScore}ポイント（満点の${Math.round(ratio*100)}%）でした。売上規模・投資計画・賃上げ意欲・地域貢献の観点から、中小企業成長加速化補助金への適合度が高いと診断されます。「100億宣言」（未完了の場合）の申請と、投資計画書の具体化を早期に進めることをおすすめします。`;
+  } else if (ratio >= 0.45) {
+    icon = '📋';
+    mainText = '条件次第で<em>適用可能</em>と判断されます';
+    eligClass = 'mid';
+    eligStrong = '適用可能性：中程度（スコア ' + totalScore + '/' + maxScore + '）';
+    eligDesc = '要件の一部は充足していますが、補完が必要な条件があります。他の補助金との組み合わせで支援を最大化できます。';
+    subsidies = [
+      { primary: true,  name: 'ものづくり補助金（グローバル展開型）', detail: '設備投資・IT化・海外展開を幅広くカバー（補助上限3,000万〜1億円）' },
+      { primary: true,  name: 'IT導入補助金（デジタル化基盤導入枠）', detail: 'DX・クラウド・業務効率化に特化した補助制度' },
+      { primary: false, name: '事業再構築補助金', detail: '業態転換・新事業展開に積極的な中小企業向け' },
+      { primary: false, name: '省エネ補助金・エネルギー対策投資促進', detail: 'GX・省エネ設備投資を検討する場合に活用可能' }
+    ];
+    summary = `貴社のスコアは${totalScore}ポイント（満点の${Math.round(ratio*100)}%）でした。成長加速化補助金の要件の一部を満たしていますが、賃上げや100億宣言などの要件強化で申請可能性が高まります。他の補助金制度も視野に入れた活用方法が有効です。`;
+  } else {
+    icon = '💡';
+    mainText = '他の補助金制度が<em>より適している</em>可能性があります';
+    eligClass = 'low';
+    eligStrong = '成長加速化補助金：要件確認が必要（スコア ' + totalScore + '/' + maxScore + '）';
+    eligDesc = '現段階では申請要件を満たしていない可能性があります。まずは要件整理と準備から始めることをおすすめします。';
+    subsidies = [
+      { primary: true,  name: '小規模事業者持続化補助金', detail: '小規模事業者の販路開拓・業務効率化を支援（補助上限200万円）' },
+      { primary: true,  name: 'IT導入補助金', detail: 'IT・デジタルツール導入を支援（補助率1/2〜3/4）' },
+      { primary: false, name: '創業補助金・起業支援', detail: '新規創業・第二創業フェーズ向けの各種支援制度' },
+      { primary: false, name: '100億宣言の準備・計画策定支援', detail: '将来の成長加速化補助金申請に向けた基盤整備' }
+    ];
+    summary = `貴社のスコアは${totalScore}ポイント（満点の${Math.round(ratio*100)}%）でした。現時点では小規模事業者向けの補助金やIT導入補助金など、段階に合った支援制度の活用が適していると考えられます。加賀ソルネットでは、現在のフェーズに合わせた最適な補助金戦略をご提案いたします。`;
+  }
+
+  document.getElementById('resultIcon').textContent = icon;
+  document.getElementById('resultMain').innerHTML = mainText;
+  document.getElementById('eligibilityBlock').innerHTML = `
+    <div class="eligibility-bar ${eligClass}">
+      <div class="eligibility-dot"></div>
+      <div class="eligibility-text">
+        <strong>${eligStrong}</strong>
+        <p>${eligDesc}</p>
+      </div>
+    </div>`;
+  document.getElementById('subsidyList').innerHTML = subsidies.map(s => `
+    <div class="subsidy-item ${s.primary ? 'primary' : 'secondary'}">
+      <div class="subsidy-badge">${s.primary ? '★ 最適' : 'おすすめ'}</div>
+      <div>
+        <div class="subsidy-name">${s.name}</div>
+        <div class="subsidy-detail">${s.detail}</div>
+      </div>
+    </div>`).join('');
+  document.getElementById('summaryText').textContent = summary;
+  document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function resetQuiz() {
+  current = 0;
+  answers = new Array(questions.length).fill(null);
+  document.getElementById('result').style.display = 'none';
+  document.getElementById('progressWrap').style.display = 'block';
+  document.getElementById('quiz').style.display = 'block';
+  renderQ();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+renderQ();
+</script>
+</body>
+</html>
